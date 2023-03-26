@@ -234,17 +234,18 @@ class ProtoConstructor:
             field_type_name = PRIMITIVE_FIELD_TYPE_NAMES[field.type]
         elif field.type in ENUM_TYPES:
             comment = ['WARNING: Unable to recover enum type name.']
-            if field.enum_lite_map:
-                comment.append('EnumLiteMap: ' + field.enum_lite_map)
             field_type_name = 'JUNKENUM'
         elif field.type in MESSAGE_TYPES:
             comment = ['WARNING: Unable to recover message type name.']
-            if field.class_reference:
-                comment.append('Class reference: ' + field.class_reference)
             field_type_name = PRIMITIVE_FIELD_TYPE_NAMES[FieldTypes.BYTES]
         elif field.type == FieldTypes.MAP:
             comment = ['WARNING: Unable to recover map types.']
             field_type_name = f'map<{JUNKTYPE}, {JUNKTYPE}>'
+
+        if field.class_reference:
+            comment.append('Class reference: ' + field.class_reference)
+        if field.enum_lite_map:
+            comment.append('EnumLiteMap: ' + field.enum_lite_map)
 
         # Add other words
         field_name = self._get_field_name(field_name_generator, field.field_reference)
