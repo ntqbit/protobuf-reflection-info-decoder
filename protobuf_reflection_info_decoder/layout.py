@@ -123,7 +123,7 @@ FIELDS_COLLECTIONS = {
 class FieldLayout:
     def __init__(self):
         self.number = 0
-        self.type = 0
+        self.type: FieldTypes = FieldTypes(0)
         self.required = False
         self.check_utf8 = False
         self.check_initialized = False
@@ -138,6 +138,26 @@ class FieldLayout:
         self.oneof_case_reference = None
         self.enum_lite_map = None
         self.map_entry = None
+
+    def to_dict(self):
+        return {
+            'number': self.number,
+            'type': self.type.name,
+            'required': self.required,
+            'check_utf8': self.check_utf8,
+            'check_initialized': self.check_initialized,
+            'map_proto2_enum': self.map_proto2_enum,
+            'supports_presence_checking': self.supports_presence_checking,
+            'is_oneof': self.is_oneof,
+            'hasbits_reference': self.hasbits_reference,
+            'bitfield_offset': self.bitfield_offset,
+            'field_reference': self.field_reference,
+            'class_reference': self.class_reference,
+            'oneof_value_reference': self.oneof_value_reference,
+            'oneof_case_reference': self.oneof_case_reference,
+            'enum_lite_map': self.enum_lite_map,
+            'map_entry': self.map_entry
+        }
 
 
 class Syntax(Enum):
@@ -159,3 +179,22 @@ class MessageLayout:
         self.repeated_field_count = 0
         self.check_initialized_count = 0
         self.fields: List[FieldLayout] = []
+
+    def to_dict(self):
+        return {
+            'syntax': 'proto3' if self.syntax == Syntax.PROTO3 else 'proto2',
+            'is_message': self.is_message,
+            'field_count': self.field_count,
+            'oneof_count': self.oneof_count,
+            'hasbits_count': self.hasbits_count,
+            'min_field_number': self.min_field_number,
+            'max_field_number': self.max_field_number,
+            'num_entries': self.num_entries,
+            'map_field_count': self.map_field_count,
+            'repeated_field_count': self.repeated_field_count,
+            'check_initialized_count': self.check_initialized_count,
+            'fields': [
+                field.to_dict()
+                for field in self.fields
+            ]
+        }
