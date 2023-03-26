@@ -98,21 +98,24 @@ def _parse_message_layout(integers: List[int], objects: list) -> MessageLayout:
         message.field_count = next(integers_it)
 
         # Read message information
-        if message.field_count != 0:
-            message.oneof_count = next(integers_it)
-            message.hasbits_count = next(integers_it)
-            message.min_field_number = next(integers_it)
-            message.max_field_number = next(integers_it)
-            message.num_entries = next(integers_it)
-            message.map_field_count = next(integers_it)
-            message.repeated_field_count = next(integers_it)
-            message.check_initialized_count = next(integers_it)
+        if message.field_count == 0:
+            return message
+
+        message.oneof_count = next(integers_it)
+        message.hasbits_count = next(integers_it)
+        message.min_field_number = next(integers_it)
+        message.max_field_number = next(integers_it)
+        message.num_entries = next(integers_it)
+        message.map_field_count = next(integers_it)
+        message.repeated_field_count = next(integers_it)
+        message.check_initialized_count = next(integers_it)
 
         # Read fields
         field_objects = iter(objects[message.oneof_count * 2 + message.hasbits_count:])
 
         for _ in range(message.field_count):
-            message.fields.append(_parse_field_layout(is_proto2, message.oneof_count, objects, integers_it, field_objects))\
+            message.fields.append(_parse_field_layout(
+                is_proto2, message.oneof_count, objects, integers_it, field_objects))
 
         return message
     except StopIteration:
