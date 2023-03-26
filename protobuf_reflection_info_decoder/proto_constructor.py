@@ -1,5 +1,5 @@
 from typing import List
-from layout import FieldLayout, MessageLayout, Syntax,\
+from .layout import FieldLayout, MessageLayout, Syntax,\
     FieldCollection, FieldTypes, FIELDS_COLLECTIONS
 
 JUNKTYPE = 'JUNKTYPE'

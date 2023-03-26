@@ -1,5 +1,5 @@
 from typing import List
-from layout import FieldTypes, ONEOF_TYPE_OFFSET, FieldLayout, MessageLayout, Syntax
+from .layout import FieldTypes, ONEOF_TYPE_OFFSET, FieldLayout, MessageLayout, Syntax
 
 
 class ParserException(Exception):

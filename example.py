@@ -1,7 +1,6 @@
 import argparse
 
-from reflection_parser import parse_message_layout
-from proto_constructor import construct_proto
+from protobuf_reflection_info_decoder import decode_to_proto
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', '-o', type=str, help='Path to output .proto file')
@@ -15,23 +14,23 @@ seq = "\u0001\u0011\u0001\u0001\u0001\u0018\u0011\u0002\u0002\u0002\u0001\u1009\
     "\n\u000e\u1008\u000b\u000f2\u0010\u0832\u0018\u1004\f"
 
 objects = [
-    "gender_",
-    "genderCase_",
+    "field0",
+    "field0Case",
     "bitField0_",
-    "usage_",
-    "info_",
+    "field1",
+    "field2",
     "Message1",
     "versionNamePrefix_",
-    "color_",
+    "field3",
     "Message2",
-    "hasAccount_",
-    "isGoogleCn_",
-    "enableInlineVm_",
-    "cached_",
+    "field55",
+    "field78",
+    "field79",
+    "field99",
     "Message3",
     "Message4",
-    "currentVersion_",
-    "arch_",
+    "field100",
+    "field500",
     "myMap_",
     "MyMapDefaultEntryHolder.defaultEntry",
     "mapWithEnum_",
@@ -40,7 +39,7 @@ objects = [
     "unknown_"
 ]
 
-proto_file = construct_proto([parse_message_layout(seq, objects)])
+proto_file = decode_to_proto([(seq, objects)])
 with open(output_file, 'w') as f:
     f.write(proto_file)
 
