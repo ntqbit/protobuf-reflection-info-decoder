@@ -6,6 +6,10 @@ JUNKTYPE = 'JUNKTYPE'
 JUNKENUM = 'JUNKENUM'
 
 
+class ProtoConstructorError(Exception):
+    pass
+
+
 class Printer:
     def new_line(self, count=1):
         raise NotImplementedError
@@ -37,21 +41,7 @@ def get_field_label(syntax: Syntax, field: FieldLayout):
 
     return ''
 
-    # FieldTypes.MESSAGE: 'message',
-    # FieldTypes.GROUP: 'group',
-    # FieldTypes.MESSAGE_LIST: 'message',
-    # FieldTypes.GROUP_LIST: 'group',
-
-    # FieldTypes.ENUM: 'enum',
-    # FieldTypes.ENUM_LIST: 'enum',
-    # FieldTypes.ENUM_LIST_PACKED: 'enum',
-
-    # FieldTypes.MAP: 'map',
-
-    # oneof
-
-
-ENUM_TYPES = [FieldTypes.ENUM, FieldTypes.ENUM_LIST, FieldTypes.BOOL_LIST_PACKED]
+ENUM_TYPES = [FieldTypes.ENUM, FieldTypes.ENUM_LIST, FieldTypes.ENUM_LIST_PACKED]
 MESSAGE_TYPES = [FieldTypes.MESSAGE, FieldTypes.GROUP, FieldTypes.MESSAGE_LIST, FieldTypes.GROUP_LIST]
 
 PRIMITIVE_FIELD_TYPE_NAMES = {
@@ -241,6 +231,8 @@ class ProtoConstructor:
         elif field.type == FieldTypes.MAP:
             comment = ['WARNING: Unable to recover map types.']
             field_type_name = f'map<{JUNKTYPE}, {JUNKTYPE}>'
+        else:
+            raise ProtoConstructorError(f'Unexpected field type {field.type} in field number: {field.number}')
 
         if field.class_reference:
             comment.append('Class reference: ' + field.class_reference)
